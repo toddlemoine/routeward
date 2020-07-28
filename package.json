@@ -2,6 +2,26 @@
   "name": "routeward",
   "version": "1.0.0",
   "license": "MIT",
+  "description": "Create helper methods for generating routes in web apps.",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toddlemoine/routeward.git"
+  },
+  "keywords": [
+    "routing",
+    "path",
+    "link",
+    "route"
+  ],
+  "author": "Todd Lemoine",
+  "bugs": {
+    "url": "https://github.com/toddlemoine/routeward/issues"
+  },
+  "homepage": "https://github.com/toddlemoine/routeward#readme",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "files": [
@@ -15,7 +35,6 @@
     "@types/jest": "^26.0.7",
     "babel-jest": "^26.1.0",
     "jest": "^26.1.0",
-    "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "rollup": "^2.23.0",
     "rollup-plugin-terser": "^6.1.0",
