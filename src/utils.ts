@@ -1,4 +1,4 @@
-import { Case } from './project.types';
+import { Case } from './types';
 
 export const startsWith = (str: string, searchStr: string): boolean => {
     return str.charAt(0) === searchStr;
@@ -39,10 +39,6 @@ const titleCase = (parts: string[]): string => {
     return parts.map(capitalize).join('');
 };
 
-const kebabCase = (parts: string[]): string => {
-    return parts.join('-');
-};
-
 const snakeCase = (parts: string[]): string => {
     return parts.join('_');
 };
@@ -55,10 +51,6 @@ export const joinWithCase = (parts: string[], casing: Case): string => {
 
     if (casing === 'title') {
         return titleCase(validParts);
-    }
-
-    if (casing === 'kebab') {
-        return kebabCase(validParts);
     }
 
     return snakeCase(validParts);

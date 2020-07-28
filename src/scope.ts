@@ -6,7 +6,7 @@ import {
     ScopeConfig,
     Resources,
     Options,
-} from 'project.types';
+} from './types';
 import { route } from './route';
 import { resources } from './resources';
 import { build } from './build';
@@ -74,7 +74,7 @@ const scope = function (
                 case 'resources':
                     return addResourcesToScope(acc, curr);
                 default:
-                    return addRoutesetToScope(acc, curr, this);
+                    return addRoutesetToScope(acc, curr as Routeset, this);
             }
         },
         {

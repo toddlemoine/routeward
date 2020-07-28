@@ -103,6 +103,38 @@ describe('scope', () => {
             expect(typeof routes.boop_apples_path).toBe('function');
             expect(routes.boop_apples_path()).toBe('/api/apples');
         });
+
+        test('can specify custom allowed paths for a resource', () => {
+            const allowed = ['save', 'edit', 'remove'];
+            const routes = scope('/', resources('apples', allowed));
+
+            allowed.forEach(path => {
+                expect(routes.apples_path(path, { id: 123 })).toBe(
+                    `/apples/123/${path}`,
+                );
+            });
+        });
+
+        test('index and show are always included in custom allowed paths', () => {
+            const routes = scope(
+                '/',
+                resources('apples', ['save', 'edit', 'remove']),
+            );
+            expect(routes.apples_path()).toBe('/apples');
+            expect(routes.apples_path('show', { id: 123 })).toBe('/apples/123');
+        });
+
+        test('index and show can be excluded from custom allowed paths', () => {
+            const routes = scope(
+                '/',
+                resources('apples', ['save'], { only: 'save' }),
+            );
+            expect(Object.keys(routes).length).toBe(1);
+            expect(() => routes.apples_path()).toThrowError();
+            expect(routes.apples_path('save', { id: 123 })).toBe(
+                '/apples/123/save',
+            );
+        });
     });
 
     describe('nested scopes', () => {

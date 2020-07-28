@@ -30,11 +30,12 @@ export type Resources = {
 };
 
 export type ResourceRestriction = {
+    use?: string[];
     only?: string[];
     except?: string[];
 };
 
-export type Case = 'snake' | 'camel' | 'kebab' | 'title';
+export type Case = 'snake' | 'camel' | 'title';
 
 export type Options = {
     prefix?: string;

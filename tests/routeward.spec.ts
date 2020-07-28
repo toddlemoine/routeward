@@ -25,12 +25,6 @@ describe('Routeward', () => {
             expect(routes['fruit_apples_path']()).toBe('/fruit/apples');
         });
 
-        test('can use kebab case', () => {
-            const { scope, route } = routeward({ case: 'kebab' });
-            const routes = scope('/', route('apples'));
-            expect(routes['apples-path']()).toBe('/apples');
-        });
-
         test('can use title case', () => {
             const { scope, route } = routeward({ case: 'title' });
             const routes = scope('/', route('apples'));

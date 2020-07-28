@@ -1,4 +1,4 @@
-import { Route } from './project.types';
+import { Route } from './types';
 
 const route = function route(path: string): Route {
     return {

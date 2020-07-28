@@ -1,1 +1,1 @@
-export { routeward as default } from './routeward';
+export { routeward } from './routeward';

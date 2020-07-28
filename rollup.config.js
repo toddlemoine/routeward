@@ -1,4 +1,5 @@
 import typescript from 'rollup-plugin-typescript2';
+import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
 export default {
@@ -11,6 +12,16 @@ export default {
         {
             file: pkg.module,
             format: 'es',
+        },
+        {
+            file: `${pkg.main}.min.js`,
+            format: 'cjs',
+            plugins: [terser()],
+        },
+        {
+            file: `${pkg.module}.min.js`,
+            format: 'es',
+            plugins: [terser()],
         },
     ],
     external: [

@@ -13,7 +13,7 @@ import {
     Options,
     HelperFunction,
     Resources,
-} from './project.types';
+} from './types';
 
 const pathToHelperName = (path: string, options: Options = {}): string => {
     const parts = trimSlashes(path)
