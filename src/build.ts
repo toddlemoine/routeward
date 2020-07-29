@@ -16,9 +16,17 @@ import {
 } from './types';
 
 const pathToHelperName = (path: string, options: Options = {}): string => {
-    const parts = trimSlashes(path)
-        .split('/')
-        .filter(route => !startsWith(route, ':'));
+    const pathAlias = path === '/' && !options.as ? 'home' : options.as;
+    const parts = pathAlias
+        ? [pathAlias]
+        : trimSlashes(path)
+              .split('/')
+              .map((part, index) =>
+                  index === 0 && Number.isInteger(parseInt(part.charAt(0), 10))
+                      ? `${options.numericPathPrefix}-${part}`
+                      : part,
+              )
+              .filter(route => !startsWith(route, ':'));
 
     return joinWithCase(
         [options.prefix, ...parts, options.suffix].filter(Boolean),
@@ -81,13 +89,15 @@ const createResourceHelperFunction = (base: string, res: Resources) => {
 
 const build = (scope: Scope, options: Options): Routeset => {
     const opts = {
+        ...options,
         prefix: scope.as,
-        suffix: options.suffix,
-        case: options.case,
     };
     // Routes are easy, so build first.
     const routes = scope.routes.reduce((acc, route: Route) => {
-        const routeHelperName = pathToHelperName(route.path, opts);
+        const routeHelperName = pathToHelperName(route.path, {
+            ...opts,
+            as: route.as,
+        });
         acc[routeHelperName] = createHelperFunction(scope.base, route.path);
         return acc;
     }, {} as Routeset);

@@ -7,6 +7,11 @@ export type Routeset = {
 export type Route = {
     type: 'route';
     path: string;
+    as: string;
+};
+
+export type RouteOptions = {
+    as: string;
 };
 
 export type Scope = {
@@ -41,4 +46,6 @@ export type Options = {
     prefix?: string;
     suffix?: string;
     case?: Case;
+    as?: string;
+    numericPathPrefix?: string;
 };

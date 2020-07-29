@@ -1,11 +1,9 @@
 # routeward
 
-Routeward is inspired by the [Phoenix framework's](https://phoenixframework.org) own helper methods for generating
-routes already specified in the app. By using the helper functions
-returned from routeward, you can limit the number of places in your app that have hard-coded routes.
+Routeward provides an easy, relatively literative, declarative way to
+generate helper methods that return the URL paths your app relies on.
 
-Use routeward to create a set of functions named the same as your routes that you can
-call anywhere in your app to get the relative URL path.
+It is inspired by the [Phoenix framework's](https://phoenixframework.org) own helper methods for generating routes already specified in the app. By using the helper functions returned from routeward, you can limit the number of places in your app that have hard-coded paths.
 
 ## Usage
 
@@ -35,9 +33,21 @@ routes.authors_pages_path({ authorId: 'smith', postId: 999 }); // '/authors/smit
 routes.api_posts_path(); // '/api/posts'
 routes.api_posts_path('show', { id: 456 }); // '/api/posts/456'
 routes.auth_dashboard(); // '/authenticated/dashboard'
-
-export default routes;
 ```
+
+## Contents
+
+-   [Installation](#installation)
+-   [Configuration](#configuration)
+-   [Scopes](#scopes)
+    -   [Alias scopes with `as`](#alias-scopes)
+-   [Routes](#routes)
+    -   [Alias routes with `as`](#alias-routes)
+    -   [Parameters](#parameters)
+    -   [Numeric routes](#numeric-routes)
+-   [Resources](#resources)
+    -   [Restricting resources with `only` and `except`](#restricting-resources)
+    -   [Use custom resources paths](#use-custom-resource-paths)
 
 ## Installation
 
@@ -56,17 +66,23 @@ to change the function name suffix from `path` to `route` and to use the camelCa
 naming convention, you would do:
 
 ```js
-const { scope, route } = routeward({ case: 'camel', suffix: 'route' });
+const { scope, route } = routeward({
+    case: 'camel',
+    suffix: 'route',
+    numericPathPrefix: 'error',
+});
 
-const routes = scope('/', route('/apples'));
+const routes = scope('/', route('/apples'), route('/404'));
 
 routes.applesRoute(); // '/apples'
+routes.error404Route(); // '/404'
 ```
 
-| Option Name | Type   | Default | Possible Values              |
-| ----------- | ------ | ------- | ---------------------------- |
-| case        | string | `snake` | `snake`, `camel`, or `title` |
-| suffix      | string | `path`  | any string value             |
+| Option Name       | Type   | Default | Possible Values              |
+| ----------------- | ------ | ------- | ---------------------------- |
+| case              | string | `snake` | `snake`, `camel`, or `title` |
+| suffix            | string | `path`  | any string value             |
+| numericPathPrefix | string | `go`    | any string value             |
 
 ## Scopes
 
@@ -145,6 +161,32 @@ routes.posts_comments_path({ id: 10, commentid: 3 }); // '/posts/10/comments/3'
 routes.posts_comments_path({ id: 10 }); // '/posts/10/comments/:commentid'
 ```
 
+### Alias routes with `as`
+
+Just like scopes, individual routes can be aliased with the `as` option:
+
+```js
+const routes = scope('/', route('/about-us', { as: 'about' }));
+routes.about_path(); // '/about-us'
+```
+
+### Numeric routes
+
+Because Javascript function names cannot begin with a number, if you define a
+route whose first character (after any slash) is numeric, such a `/404`, routeward will transform that into a route that begins with `go`, by default.
+
+```js
+const routes = scope('/', route('/404'));
+routes.go_404_path(); // '/404'
+```
+
+You can override the `go` default by setting the `numericPathPrefix` option
+to your preferred prefix when calling routeward:
+
+```js
+const { scope, route } = routeward({ numericPathPrefix: 'error' });
+```
+
 ## Resources
 
 It's not unusual to require the same sorts of routes but for different content entitities.
@@ -193,8 +235,7 @@ routes.posts_path('delete', { id: 123 }); // Error!
 
 ### Use custom resource paths
 
-Not everyone uses `/edit`, `/delete` resource paths. Specify your own by passing them as second
-argument instead of the only/except restrictions object:
+Not everyone uses `/edit`, `/delete` resource paths. Specify your own by passing them as the second argument to `resources` instead of the only/except restrictions object:
 
 ```js
 const routes = scope('/', resources('/apples', ['view', 'export']));

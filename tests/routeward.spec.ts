@@ -50,5 +50,25 @@ describe('Routeward', () => {
             const routes = scope('/', route('apples'));
             expect(routes['apples_route']()).toBe('/apples');
         });
+
+        test('can be set to nothing', () => {
+            const { scope, route } = routeward({ suffix: '' });
+            const routes = scope('/', route('apples'));
+            expect(routes.apples()).toBe('/apples');
+        });
+    });
+
+    describe('prefix for numeric routes', () => {
+        test('defaults to `go`', () => {
+            const { scope, route } = routeward();
+            const routes = scope('/', route('404'));
+            expect(routes.go_404_path()).toBe('/404');
+        });
+
+        test('can be customized', () => {
+            const { scope, route } = routeward({ numericPathPrefix: 'error' });
+            const routes = scope('/', route('404'));
+            expect(routes.error_404_path()).toBe('/404');
+        });
     });
 });

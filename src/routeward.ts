@@ -7,11 +7,13 @@ type Case = 'snake' | 'camel' | 'kebab' | 'title';
 type Options = {
     suffix?: string;
     case?: Case;
+    numericPathPrefix?: string;
 };
 
 const defaultOptions: Options = {
     suffix: 'path',
     case: 'snake',
+    numericPathPrefix: 'go',
 };
 
 const routeward = (options: Options = {}) => {

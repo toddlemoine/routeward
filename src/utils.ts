@@ -30,17 +30,21 @@ const capitalize = (str: string): string => {
         .join('');
 };
 
+const processCaseParts = (acc: string[], part: string): string[] => {
+    return acc.concat(...part.split(/[-_]/));
+};
+
 const camelCase = (parts: string[]): string => {
-    const [first, ...rest] = parts;
+    const [first, ...rest] = parts.reduce(processCaseParts, []);
     return [first, ...rest.map(capitalize)].join('');
 };
 
 const titleCase = (parts: string[]): string => {
-    return parts.map(capitalize).join('');
+    return parts.reduce(processCaseParts, []).map(capitalize).join('');
 };
 
 const snakeCase = (parts: string[]): string => {
-    return parts.join('_');
+    return parts.reduce(processCaseParts, []).join('_');
 };
 
 export const joinWithCase = (parts: string[], casing: Case): string => {

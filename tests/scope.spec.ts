@@ -24,6 +24,18 @@ describe('scope', () => {
             expect(routes.api_apples_path()).toBe('/api/apples');
         });
 
+        test('it defaults to `home` as name for backslash route', () => {
+            const routes = scope('/', route('/'));
+            expect(typeof routes.home_path).toBe('function');
+            expect(routes.home_path()).toBe('/');
+        });
+
+        test('it generates a named route', () => {
+            const routes = scope('/', route('/', { as: 'root' }));
+            expect(typeof routes.root_path).toBe('function');
+            expect(routes.root_path()).toBe('/');
+        });
+
         test('it generates a route with parameters', () => {
             const routes = scope('/api', route('apples/:id'));
             expect(typeof routes.api_apples_path).toBe('function');
@@ -49,6 +61,31 @@ describe('scope', () => {
                 expect(typeof routes[`${fruit}_path`]).toBe('function');
                 expect(routes[`${fruit}_path`]()).toBe(`/${fruit}`);
             });
+        });
+        test('leading slash in scope is optional', () => {
+            const routes = scope('api', route('/posts'));
+            expect(routes.api_posts_path()).toBe('/api/posts');
+        });
+        test('leading slash in route is optional', () => {
+            const routes = scope('api', route('posts'));
+            expect(routes.api_posts_path()).toBe('/api/posts');
+        });
+    });
+
+    describe('route helper names', () => {
+        test('replaces dashes with snake case', () => {
+            const routes = scope('/', route('/apples-123_fruit'));
+            expect(routes.apples_123_fruit_path()).toBe('/apples-123_fruit');
+        });
+        test('replaces dashes with camel case', () => {
+            const { scope, route } = routeward({ case: 'camel' });
+            const routes = scope('/', route('/apples-123_fruit'));
+            expect(routes.apples123FruitPath()).toBe('/apples-123_fruit');
+        });
+        test('replaces dashes with title case', () => {
+            const { scope, route } = routeward({ case: 'title' });
+            const routes = scope('/', route('/apples-123_fruit'));
+            expect(routes.Apples123FruitPath()).toBe('/apples-123_fruit');
         });
     });
 
