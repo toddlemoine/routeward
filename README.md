@@ -1,9 +1,11 @@
 # routeward
 
-Routeward provides an easy, relatively literative, declarative way to
+Routeward provides an easy, relatively literate, declarative way to
 generate helper methods that return the URL paths your app relies on.
 
 It is inspired by the [Phoenix framework's](https://phoenixframework.org) own helper methods for generating routes already specified in the app. By using the helper functions returned from routeward, you can limit the number of places in your app that have hard-coded paths.
+
+**Demo: https://repl.it/@tozaisen/routeward-demo**
 
 ## Usage
 
@@ -40,13 +42,13 @@ routes.auth_dashboard(); // '/authenticated/dashboard'
 -   [Installation](#installation)
 -   [Configuration](#configuration)
 -   [Scopes](#scopes)
-    -   [Alias scopes with `as`](#alias-scopes)
+    -   [Alias scopes with `as`](#alias-scopes-with-as)
 -   [Routes](#routes)
-    -   [Alias routes with `as`](#alias-routes)
+    -   [Alias routes with `as`](#alias-routes-with-as)
     -   [Parameters](#parameters)
     -   [Numeric routes](#numeric-routes)
 -   [Resources](#resources)
-    -   [Restricting resources with `only` and `except`](#restricting-resources)
+    -   [Restricting resources with `only` and `except`](#restricting-resources-with-only-and-except)
     -   [Use custom resources paths](#use-custom-resource-paths)
 
 ## Installation
@@ -260,3 +262,7 @@ const routes = scope(
 
 routes.apples_path('show', { id: 123 }); // Error!
 ```
+
+## License
+
+MIT License
